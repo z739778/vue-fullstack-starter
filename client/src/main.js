@@ -6,7 +6,7 @@ import { sync } from 'vuex-router-sync'
 sync(store, router)
 
 // locale
-import './locale'
+import { i18n } from './locale'
 // ui library
 import Element from 'element-ui'
 Vue.use(Element)
@@ -26,6 +26,7 @@ import './socket'
 const app = new Vue({
   router,
   store,
+  i18n,
   ...App // Object spread copying everything from App.vue
 })
 // actually mount to DOM

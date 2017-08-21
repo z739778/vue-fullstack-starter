@@ -73,12 +73,12 @@ export default {
       this.pending = true
       const condition = merge({ page: { current, limit: this.globalConfig.pageLimit }}, ...rest)
       return resource.query(condition)
-      .then(res => res.json()).then(data => {
-        this.pending = false
-        this.page.current = current || this.page.current
-        this.page.total = data.page ? data.page.total : data.results.length
-        return data.results
-      })
+        .then(res => res.json()).then(data => {
+          this.pending = false
+          this.page.current = current || this.page.current
+          this.page.total = data.page ? data.page.total : data.results.length
+          return data.results
+        })
     },
     onPageChange (targetPage) {
       this.$emit('page-change', targetPage)

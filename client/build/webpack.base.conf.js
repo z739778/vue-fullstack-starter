@@ -1,7 +1,12 @@
 var path = require('path')
 var config = require('../../config').frontend
 var utils = require('./utils')
-var projectRoot = path.resolve(__dirname, '../')
+var vueLoaderConfig = require('./vue-loader.conf')
+var projectRoot = path.resolve(__dirname, '../src')
+
+function resolve (dir) {
+  return path.join(__dirname, '../..', dir)
+}
 
 module.exports = {
   entry: {
@@ -13,8 +18,7 @@ module.exports = {
     filename: '[name].js'
   },
   resolve: {
-    extensions: ['', '.js', '.vue'],
-    fallback: [path.join(__dirname, '../../node_modules')],
+    extensions: ['.js', '.vue'],
     alias: {
       'src': path.resolve(__dirname, '../src'),
       'assets': path.resolve(__dirname, '../src/assets'),
@@ -22,42 +26,25 @@ module.exports = {
       'resources': path.resolve(__dirname, '../src/resources')
     }
   },
-  resolveLoader: {
-    fallback: [path.join(__dirname, '../../node_modules')]
-  },
   module: {
-    rules: [
-      {
-        test: /\.vue$/,
-        loader:'eslint-loader',
+    rules: [{
+        test: /\.(js|vue)$/,
+        loader: 'eslint-loader',
         enforce: "pre",
         include: projectRoot,
-        exclude: /node_modules/
-      },
-      {
-        test: /\.js$/,
-        loader:'eslint-loader',
-        enforce: "pre",
-        include: projectRoot,
-        exclude: /node_modules/
+        options: {
+          formatter: require('eslint-friendly-formatter')
+        }
       },
       {
         test: /\.vue$/,
-        loader:'vue-loader',
+        loader: 'vue-loader',
+        options: vueLoaderConfig 
       },
       {
         test: /\.js$/,
-        loader:'babel-loader',
+        loader: 'babel-loader',
         include: projectRoot,
-        exclude: /node_modules/
-      },
-      {
-        test: /\.json$/,
-        loader:'json-loader',
-      },
-      {
-        test: /\.html$/,
-        loader:'vue-html-loader',
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -65,7 +52,7 @@ module.exports = {
         options: {
           limit: 10000,
           name: utils.assetsPath('img/[name].[hash:7].[ext]')
-        }  
+        }
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
@@ -73,7 +60,7 @@ module.exports = {
         options: {
           limit: 10000,
           name: utils.assetsPath('img/[name].[hash:7].[ext]')
-        }  
+        }
       }
     ]
   }

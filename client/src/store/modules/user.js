@@ -1,7 +1,7 @@
 import { assign } from 'lodash'
 import { saveMulti, clearMulti } from '../../storage'
 import { init, login, getUserInfo } from './user.api'
-import { STORE_KEY_USERNAME, STORE_KEY_ACCESS_TOKEN, STORE_KEY_REFRESH_TOKEN } from '../../constants'
+import { STORE_KEY_USERNAME, STORE_KEY_ACCESSTOKEN, STORE_KEY_REFRESHTOKEN } from '../../constants'
 
 const stored = init()
 
@@ -9,8 +9,8 @@ const state = {
   _id: '',
   role: 'guest',
   username: stored[0] || '',
-  access_token: stored[1] || '',
-  refresh_token: stored[2] || ''
+  accessToken: stored[1] || '',
+  refreshToken: stored[2] || ''
 }
 
 let userInitPromise = null
@@ -21,21 +21,21 @@ const mutations = {
     state._id = userInfo._id
     state.role = userInfo.role
     state.username = userInfo.username
-    state.access_token = userInfo.access_token
-    state.refresh_token = userInfo.refresh_token
+    state.accessToken = userInfo.accessToken
+    state.refreshToken = userInfo.refreshToken
   },
   // update stored token
   UPDATE_TOKEN (state, payload) {
-    state.access_token = payload.access_token
-    state.refresh_token = payload.refresh_token
+    state.accessToken = payload.accessToken
+    state.refreshToken = payload.refreshToken
   },
   // after logout
   LOGOUT (state) {
     state._id = ''
     state.username = ''
     state.role = 'guest'
-    state.access_token = ''
-    state.refresh_token = ''
+    state.accessToken = ''
+    state.refreshToken = ''
   }
 }
 
@@ -47,19 +47,19 @@ const actions = {
         getUserInfo(data.token).then(user => {
           const userInfo = assign({}, user, {
             username: payload.username,
-            access_token: data.token,
-            refresh_token: ''
+            accessToken: data.token,
+            refreshToken: ''
           })
           commit('SET_USER_INFO', userInfo)
           saveMulti([{
             key: STORE_KEY_USERNAME,
             value: userInfo.username
           }, {
-            key: STORE_KEY_ACCESS_TOKEN,
-            value: userInfo.access_token
+            key: STORE_KEY_ACCESSTOKEN,
+            value: userInfo.accessToken
           }, {
-            key: STORE_KEY_REFRESH_TOKEN,
-            value: userInfo.refresh_token
+            key: STORE_KEY_REFRESHTOKEN,
+            value: userInfo.refreshToken
           }])
           resolve()
         }).catch(() => {})
@@ -69,18 +69,20 @@ const actions = {
   // refresh token action
   refreToken ({ commit }, payload) {
     commit('REFERE_TOKEN')
-    saveMulti[{
-      key: STORE_KEY_ACCESS_TOKEN,
-      value: payload.access_token
-    }, {
-      key: STORE_KEY_REFRESH_TOKEN,
-      value: payload.refresh_token
-    }]
+    saveMulti[
+      {
+        key: STORE_KEY_ACCESSTOKEN,
+        value: payload.accessToken
+      }, {
+        key: STORE_KEY_REFRESHTOKEN,
+        value: payload.refreshToken
+      }
+    ]
   },
   // logout action
   logout ({ commit }, payload) {
     commit('LOGOUT')
-    clearMulti([STORE_KEY_USERNAME, STORE_KEY_ACCESS_TOKEN, STORE_KEY_REFRESH_TOKEN])
+    clearMulti([STORE_KEY_USERNAME, STORE_KEY_ACCESSTOKEN, STORE_KEY_REFRESHTOKEN])
   },
   // init user info
   initUserInfo ({ commit, dispatch, state }) {
@@ -92,8 +94,8 @@ const actions = {
           if (data._id) {
             userInfo = assign({}, data, {
               username: stored[0],
-              access_token: stored[1],
-              refresh_token: stored[2]
+              accessToken: stored[1],
+              refreshToken: stored[2]
             })
             commit('SET_USER_INFO', userInfo)
           }
@@ -115,13 +117,13 @@ const getters = {
     return state.role
   },
   accessToken (state) {
-    return state.access_token
+    return state.accessToken
   },
   username (state) {
     return state.username
   },
   loggedIn (state) {
-    return !!(state.username && state.access_token)
+    return !!(state.username && state.accessToken)
   }
 }
 
