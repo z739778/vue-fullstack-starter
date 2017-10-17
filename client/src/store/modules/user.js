@@ -1,7 +1,7 @@
 import { assign } from 'lodash'
 import { saveMulti, clearMulti } from '../../storage'
 import { init, login, getUserInfo } from './user.api'
-import { STORE_KEY_USERNAME, STORE_KEY_ACCESSTOKEN, STORE_KEY_REFRESHTOKEN } from '../../constants'
+import { STORE_KEY_USERNAME, STORE_KEY_ACCESS_TOKEN, STORE_KEY_REFRESH_TOKEN } from '../../constants'
 
 const stored = init()
 
@@ -55,10 +55,10 @@ const actions = {
             key: STORE_KEY_USERNAME,
             value: userInfo.username
           }, {
-            key: STORE_KEY_ACCESSTOKEN,
+            key: STORE_KEY_ACCESS_TOKEN,
             value: userInfo.accessToken
           }, {
-            key: STORE_KEY_REFRESHTOKEN,
+            key: STORE_KEY_REFRESH_TOKEN,
             value: userInfo.refreshToken
           }])
           resolve()
@@ -71,10 +71,10 @@ const actions = {
     commit('REFERE_TOKEN')
     saveMulti[
       {
-        key: STORE_KEY_ACCESSTOKEN,
+        key: STORE_KEY_ACCESS_TOKEN,
         value: payload.accessToken
       }, {
-        key: STORE_KEY_REFRESHTOKEN,
+        key: STORE_KEY_REFRESH_TOKEN,
         value: payload.refreshToken
       }
     ]
@@ -82,7 +82,7 @@ const actions = {
   // logout action
   logout ({ commit }, payload) {
     commit('LOGOUT')
-    clearMulti([STORE_KEY_USERNAME, STORE_KEY_ACCESSTOKEN, STORE_KEY_REFRESHTOKEN])
+    clearMulti([STORE_KEY_USERNAME, STORE_KEY_ACCESS_TOKEN, STORE_KEY_REFRESH_TOKEN])
   },
   // init user info
   initUserInfo ({ commit, dispatch, state }) {

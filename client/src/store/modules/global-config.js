@@ -1,4 +1,6 @@
 import Vue from 'vue'
+// locale
+import { i18n } from '../../locale'
 import { read, save } from '../../storage'
 import { STORE_KEY_CONFIG_LOCALE, STORE_KEY_CONFIG_PAGE_LIMIT } from '../../constants'
 
@@ -16,11 +18,9 @@ const mutations = {
 
 const actions = {
   updateLocale ({ commit }, lang) {
-    require([`../../locale/${lang}.js`], (langConfig) => {
-      Vue.locale(lang, langConfig.default)
-      Vue.config.lang = lang
-      save(STORE_KEY_CONFIG_LOCALE, lang)
-    })
+    i18n.locale = lang
+    Vue.config.lang = lang
+    save(STORE_KEY_CONFIG_LOCALE, lang)
   },
   initGlobalConfig ({ commit, dispatch, state }) {
     commit('UPDATE', {

@@ -1,7 +1,6 @@
 <template>
   <transition name="header">
     <header id="header" v-if="loggedIn">
-      <h1></h1>
       <div class="nav" v-if="loggedIn">
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
@@ -180,17 +179,10 @@ export default {
   display flex
   flex-direction row
   align-items center
-  justify-content space-between
+  justify-content flex-end
   padding 0 1rem
   background-color $color-white
-  h1
-    float left
-    height $header-height
-    line-height @height
-    margin 0
-    font-weight normal
-    > a
-      color #fff
+  height 3.5rem
   .nav
     float right
     margin 0
